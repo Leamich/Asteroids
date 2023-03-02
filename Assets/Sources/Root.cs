@@ -19,9 +19,10 @@ public class Root : MonoBehaviour
     public LaserGun LaserGun => _laserGun;
     public LaserGunRollback LaserGunRollback => _laserGunRollback;
 
-    public void DisableShip()
+    public void HitShip()
     {
-        _shipInputRouter.OnDisable();
+        _shipModel.Hit();
+        if(_shipModel.IsDead()) _shipInputRouter.OnDisable();
     }
 
     private void Awake()

@@ -12,6 +12,8 @@ namespace Asteroids.Model
         private readonly float _secondsToStop = 1f;
         private readonly float _degreesPerSecond = 180;
 
+        private int _lives = 3;
+
         public Vector2 Acceleration { get; private set; }
 
         public void Accelerate(float deltaTime)
@@ -48,6 +50,16 @@ namespace Asteroids.Model
             nextPosition.y = Mathf.Repeat(nextPosition.y, 1);
 
             MoveTo(nextPosition);
+        }
+
+        public void Hit()
+        {
+            if (_lives > 0) _lives--;
+        }
+
+        public bool IsDead()
+        {
+            return _lives == 0;
         }
     }
 }
