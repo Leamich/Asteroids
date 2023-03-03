@@ -22,7 +22,11 @@ public class Root : MonoBehaviour
     public void HitShip()
     {
         _shipModel.Hit();
-        if(_shipModel.IsDead()) _shipInputRouter.OnDisable();
+        if (_shipModel.IsDead())
+        {
+            _shipInputRouter.OnDisable();
+            OnShipDestroying();
+        }
     }
 
     private void Awake()
