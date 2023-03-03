@@ -6,19 +6,47 @@ namespace Asteroids.Model
     public class Nlo : Enemy
     {
         private readonly float _speed;
-        private readonly Transformable _target;
 
-        public Nlo(Transformable target, Vector2 position, float speed) : base(position, 0)
+        private int _army;
+        
+        public bool IsDead = false;
+
+        public Nlo(Vector2 position, float speed) : base(position, 0)
         {
-            _target = target;
+            Debug.Log(position);
+
+            Destroying += OnDestroy;
+
             _speed = speed;
+
+            _army = NloArmyManager.AddNlo(this);
+
+            Debug.Log(_army);
+        }
+
+        private void OnDestroy()
+        {
+            IsDead = true;
+            NloArmyManager.UpdateArmies();
         }
 
         public override void Update(float deltaTime)
         {
-            Vector2 nextPosition = Vector2.MoveTowards(Position, _target.Position, _speed * deltaTime);
+            var target = NloArmyManager.GetTarget(_army);
+
+            Vector2 nextPosition = Vector2.MoveTowards(Position, target.Position, _speed * deltaTime);
             MoveTo(nextPosition);
-            LookAt(_target.Position);
+            LookAt(target.Position);
+
+            if (Position == target.Position && _army != target.GetArmyNumber())
+            {
+                Destroy();
+            }
+        }
+
+        public int GetArmyNumber()
+        {
+            return _army;
         }
 
         private void LookAt(Vector2 point)

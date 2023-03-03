@@ -59,6 +59,7 @@ namespace Asteroids.Model
 
         public bool IsDead()
         {
+            return false;
             return _lives == 0;
         }
     }
